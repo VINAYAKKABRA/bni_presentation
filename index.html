@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shri Krishna Metal Extruders | Premium Brass Solutions</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&family=Lora:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --brass: #B5A642;
+            --copper: #B87333;
+            --dark-bg: #111;
+            --darker-bg: #000;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Lora', serif;
+            color: var(--copper);
+            background-color: var(--darker-bg);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+        
+        .presentation-container {
+            width: 100%;
+            height: 100vh;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            padding: 1.5rem 3rem 3rem;
+            opacity: 0;
+            transition: opacity 0.8s ease, transform 1s ease;
+            transform: translateX(100%);
+            z-index: 1;
+            background-color: var(--darker-bg);
+        }
+        
+        .slide.active {
+            opacity: 1;
+            transform: translateX(0);
+            z-index: 2;
+        }
+        
+        .slide.prev {
+            transform: translateX(-100%);
+        }
+        
+        .slide-content {
+            max-width: 1400px;
+            width: 100%;
+            height: 100%;
+            position: relative;
+            z-index: 3;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .text-content {
+            flex: 0 0 auto;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        
+        .image-content {
+            flex: 1 1 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            padding: 0.5rem 0;
+        }
+        
+        .slide-title {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 800;
+            font-size: 3rem;
+            color: var(--brass);
+            margin-bottom: 0.8rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            position: relative;
+            display: inline-block;
+        }
+        
+        .slide-title::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--brass), #c4b868);
+            border-radius: 2px;
+        }
+        
+        .slide-subtitle {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            font-size: 1.6rem;
+            color: var(--brass);
+            margin-bottom: 0.8rem;
+        }
+        
+        .slide-text {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            max-width: 800px;
+            color: var(--copper);
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        /* Updated image grid for 2-3 larger images */
+        .image-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 25px;
+            width: 100%;
+            height: 100%;
+            max-height: 70vh;
+        }
+        
+        /* For slides with 3 images */
+        .image-grid.three-images {
+            grid-template-columns: repeat(3, 1fr);
+        }
+        
+        .image-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(181, 166, 66, 0.4);
+            background-color: var(--dark-bg);
+            display: flex;
+            flex-direction: column;
+            transform: scale(0.95);
+            opacity: 0;
+            animation: scaleIn 0.5s forwards;
+            transition: transform 0.3s ease;
+        }
+        
+        .image-item:hover {
+            transform: scale(0.98);
+            box-shadow: 0 8px 25px rgba(181, 166, 66, 0.5);
+        }
+        
+        /* Updated image styling for larger display */
+        .image-item img {
+            width: 100%;
+            height: 75%;
+            object-fit: contain;
+            transition: transform 0.5s ease;
+            background-color: var(--dark-bg);
+            padding: 10px;
+        }
+        
+        .image-caption {
+            padding: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            color: var(--brass);
+            background: rgba(0, 0, 0, 0.8);
+            flex-shrink: 0;
+            height: 25%;
+            font-size: 1.1rem;
+        }
+        
+        .logo {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, var(--brass), #c4b868);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #000;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            z-index: 10;
+            line-height: 1.2;
+        }
+        
+        .navigation {
+            position: fixed;
+            bottom: 1.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+            z-index: 100;
+        }
+        
+        .nav-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: rgba(181, 166, 66, 0.5);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-dot.active {
+            background-color: var(--brass);
+            transform: scale(1.3);
+        }
+        
+        .nav-arrow {
+            position: fixed;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 50px;
+            height: 50px;
+            background-color: rgba(181, 166, 66, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 100;
+            transition: all 0.3s ease;
+            color: var(--brass);
+            font-size: 1.5rem;
+            border: 1px solid var(--brass);
+        }
+        
+        .nav-arrow:hover {
+            background-color: rgba(181, 166, 66, 0.4);
+            transform: translateY(-50%) scale(1.1);
+        }
+        
+        .nav-prev {
+            left: 1.5rem;
+        }
+        
+        .nav-next {
+            right: 1.5rem;
+        }
+        
+        .referral-box {
+            margin-top: 1.5rem;
+            padding: 1.2rem;
+            background: rgba(181, 166, 66, 0.1);
+            border-left: 4px solid var(--brass);
+            border-radius: 4px;
+            text-align: center;
+        }
+        
+        .referral-box p {
+            margin: 0;
+            font-size: 1.1rem;
+            color: var(--brass);
+        }
+        
+        .contact-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .contact-item {
+            padding: 1.5rem;
+            background: rgba(181, 166, 66, 0.1);
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .contact-item h3 {
+            color: var(--brass);
+            margin-bottom: 0.5rem;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        .qr-code {
+            width: 150px;
+            height: 150px;
+            background: rgba(181, 166, 66, 0.2);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 2rem auto;
+            color: var(--brass);
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+        }
+        
+        @keyframes scaleIn {
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 1200px) {
+            .slide {
+                padding: 1rem 2rem 2rem;
+            }
+            
+            .slide-title {
+                font-size: 2.5rem;
+            }
+            
+            .image-grid.three-images {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .slide {
+                padding: 1rem 1.5rem 1.5rem;
+            }
+            
+            .slide-title {
+                font-size: 2rem;
+            }
+            
+            .image-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .image-grid.three-images {
+                grid-template-columns: 1fr;
+            }
+            
+            .nav-arrow {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+            }
+            
+            .nav-prev {
+                left: 1rem;
+            }
+            
+            .nav-next {
+                right: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+        <!-- Slide 1: Opening -->
+        <section class="slide active" id="slide1">
+        <div class="logo" style="margin-top: 20px;">
+            <img src="brass_logo.jpg" alt="Shri Krishna Metal Extruders Logo" style="width: 120px; height: 100px;">
+        </div>
+
+            <div class="slide-content">
+                <div class="text-content">
+                    <h1 class="slide-title">Shri Krishna Metal Extruders Pvt. Ltd.</h1>
+                    <p class="slide-subtitle">Premium Brass Solutions Since 1947</p>
+                </div>
+                <div class="image-content">
+                    <div class="image-grid three-images">
+                        <div class="image-item">
+                            <img src="brass_rod.jpg" alt="Brass rods in warehouse">
+                            <div class="image-caption">Round Brass Rods</div>
+                        </div>
+                        <div class="image-item">
+                            <img src="brass_rod_all.jpg" alt="Finished brass rods">
+                            <div class="image-caption">Brass Rods</div>
+                        </div>
+                        <div class="image-item">
+                            <img src="brass_utensil.jpg" alt="Brass utensils">
+                            <div class="image-caption">Brass Utensils</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Slide 2: Applicative Sectors -->
+        <section class="slide" id="slide2">
+            <div class="slide-content">
+                <div class="text-content">
+                    <h1 class="slide-title">The Unseen Metal in Everyday Life</h1>
+                    <p class="slide-text">Brass is vital in countless industries. Here are just some of the sectors we serve.</p>
+                </div>
+                <div class="image-content">
+                    <div class="image-grid">
+                        <div class="image-item">
+                            <img src="brass_auto.jpg" alt="Automotive parts">
+                            <div class="image-caption">Automotive Components</div>
+                        </div>
+                        <div class="image-item">
+                            <img src="brass_sanitary.png" alt="Plumbing fixtures">
+                            <div class="image-caption">Plumbing Fixtures</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 3: Round Brass Rods -->
+        <section class="slide" id="slide3">
+            <div class="slide-content">
+                <div class="text-content">
+                    <h1 class="slide-title">Round Brass Rods: Strong & Versatile</h1>
+                    <p class="slide-text">The workhorses of industry—found in electrical systems, plumbing, and countless engineering tools.</p>
+                </div>
+                <div class="image-content">
+                    <div class="image-grid three-images">
+                        <div class="image-item">
+                            <img src="brass_round_rod.jpg" alt="Round rod bundles">
+                            <div class="image-caption">Round Rod Bundles</div>
+                        </div>
+                        <div class="image-item">
+                            <img src="brass_electrical.jpg" alt="Electrical applications">
+                            <div class="image-caption">Electrical Connectors</div>
+                        </div>
+                        <div class="image-item">
+                            <img src="brass_plumb.png" alt="Plumbing applications">
+                            <div class="image-caption">Plumbing Fittings</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="referral-box">
+                    <p><strong>Referral Request:</strong> Who are 3 wholesalers or manufacturers you know, who need bulk round brass rods?</p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Slide 4: Hex Brass Rods -->
+        <section class="slide" id="slide4">
+            <div class="slide-content">
+                <div class="text-content">
+                    <h1 class="slide-title">Hex Brass Rods: Precision and Grip</h1>
+                    <p class="slide-text">The hexagonal shape provides superior grip and torque resistance, making it perfect for high-precision components.</p>
+                </div>
+                <div class="image-content">
+                    <div class="image-grid">
+                        <div class="image-item">
+                            <img src="brass_hex.jpg" alt="Hex rod stack">
+                            <div class="image-caption">Hexagonal Brass Rods</div>
+                        </div>
+                        <div class="image-item">
+                            <img src="brass_fastners.png" alt="Fasteners & nuts">
+                            <div class="image-caption">Precision Fasteners</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="referral-box">
+                    <p><strong>Referral Request:</strong> Refer 3 companies using hex brass rods for precision parts like fasteners or automotive components.</p>
+                </div>
+            </div>
+        </section>
+        
+<!-- Slide 5: Square/Flat Brass Rods -->
+<section class="slide" id="slide5">
+    <div class="slide-content">
+        <div class="text-content">
+            <h1 class="slide-title">Square & Flat Rods: Style Meets Strength</h1>
+            <p class="slide-text">
+                Sought after by designers and makers for its aesthetic appeal and structural integrity in décor and custom furniture.
+            </p>
+        </div>
+        <div class="image-content">
+            <div class="image-grid two-images" style="display: flex; justify-content: space-between; gap: 2rem; flex-wrap: wrap;">
+                <div class="image-item" style="flex: 1; text-align: center;">
+                    <img src="brass_flats.jpg" alt="Square rods" style="width: 100%; height: auto;">
+                    <div class="image-caption">Square Brass Rods</div>
+                </div>
+                <div class="image-item" style="flex: 1; text-align: center;">
+                    <img src="brass_flat_furniture.jpg" alt="Lamp bases" style="width: 100%; height: auto;">
+                    <div class="image-caption">Furniture using Brass Flats</div>
+                </div>
+            </div>
+        </div>
+        <div class="referral-box">
+            <p><strong>Referral Request:</strong> Do you know 3 furniture makers, architects, or wholesale décor suppliers?</p>
+        </div>
+    </div>
+</section>
+
+        
+        <!-- Slide 6: Brass Precision Parts -->
+        <section class="slide" id="slide6">
+            <div class="slide-content">
+                <div class="text-content">
+                    <h1 class="slide-title">Brass Parts: The Custom Component Experts</h1>
+                    <p class="slide-text">We provide reliable, custom brass components that form the critical connections in the pipes and systems of modern homes and industries.</p>
+                </div>
+                <div class="image-content">
+                    <div class="image-grid">
+                        <div class="image-item">
+                            <img src="brass_insert.png" alt="UPVC/CPVC fittings">
+                            <div class="image-caption">Brass Insert/ Components</div>
+                        </div>
+                        <div class="image-item">
+                            <img src="brass_insert_in_pipe.png" alt="Valves & connectors">
+                            <div class="image-caption">UPVC pipe fittings</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="referral-box">
+                    <p><strong>Referral Request:</strong> Connect me to 3 UPVC/ CPVC pipe manufacturers.</p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Slide 7: Brass Parat -->
+        <section class="slide" id="slide7">
+            <div class="slide-content">
+                <div class="text-content">
+                    <h1 class="slide-title">Brass Parat: Tradition Meets Trendy</h1>
+                    <p class="slide-text">Our hand-finished brass parats are preferred by stores, and homes that value tradition, style, and well-being.</p>
+                </div>
+<div class="image-content" style="display: flex; justify-content: center; align-items: center; padding: 2rem 0;">
+    <div class="image-item" style="text-align: center;">
+        <img src="brass_parat.png" alt="Kitchen use" style="max-width: 100%; height: auto;">
+        <div class="image-caption" style="margin-top: 0.5rem;">Brass Parat</div>
+    </div>
+</div>
+
+                <div class="referral-box">
+                    <p><strong>Referral Request:</strong> Who are 3 wholesalers, stores, or distributors interested in elegant brass parats?</p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Slide 8: Brass Scrap -->
+        <section class="slide" id="slide8">
+            <div class="slide-content">
+                <div class="text-content">
+                    <h1 class="slide-title">Brass Scrap: Closing the Loop Sustainably</h1>
+                    <p class="slide-text">We buy and process domestic and imported brass scrap, transforming it into high-quality new products through sustainable manufacturing.</p>
+                </div>
+                <div class="image-content">
+                    <div class="image-grid">
+                        <div class="image-item">
+                            <img src="brass_utensil_scrap.png" alt="Scrap heaps">
+                            <div class="image-caption">Brass Utensil Scrap</div>
+                        </div>
+                        <div class="image-item">
+                            <img src="brass_purja.png" alt="Import containers">
+                            <div class="image-caption">Brass Scrap</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="referral-box">
+                    <p><strong>Referral Request:</strong> Do you know 3 bulk brass scrap suppliers, either in India or abroad?</p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Slide 9: How You Can Help -->
+        <section class="slide" id="slide9">
+    <div class="slide-content">
+        <div class="text-content">
+            <h1 class="slide-title">How You Can Help Us Grow</h1>
+            <p class="slide-text">Who in your network can benefit from a reliable, long-standing brass supplier?</p>
+        </div>
+
+        <div class="image-content" style="display: flex; justify-content: center; gap: 2rem; padding: 2rem 0;">
+            <div class="image-item" style="flex: 1; max-width: 40%; text-align: center;">
+                <img src="brass_upvc_warehouse.jpg" alt="Construction sector" style="width: 100%; height: auto; border-radius: 8px;">
+                <div class="image-caption" style="margin-top: 0.5rem;">UPVC/CPVC Pipe Fitting Manufacturers</div>
+            </div>
+            <div class="image-item" style="flex: 1; max-width: 40%; text-align: center;">
+                <img src="brass_furniture_industry.jpg" alt="Manufacturing" style="width: 100%; height: auto; border-radius: 8px;">
+                <div class="image-caption" style="margin-top: 0.5rem;">Furniture Manufacturers</div>
+            </div>
+        </div>
+
+        <div class="referral-box">
+            <p>A referral helps everyone: Your contacts get a premium supplier, you strengthen your network, and we grow together!</p>
+        </div>
+    </div>
+</section>
+
+        
+        <!-- Slide 10: Bad Referrals -->
+        <section class="slide" id="slide10">
+    <div class="slide-content">
+        <div class="text-content" style="padding: 2rem 10%; text-align: left;">
+            <h1 class="slide-title" style="margin-bottom: 5rem;">WHO IS NOT THE RIGHT LEAD?</h1>
+
+            <ul class="slide-text" style="font-size: 1.5rem; list-style-type: disc; padding-left: 2rem; margin-left: 0;">
+                <li style="margin-bottom: 1rem;">Retailers looking for small quantities</li>
+                <li style="margin-bottom: 1rem;">People interested in buying metals other than Brass like Copper, Zinc, etc.</li>
+                <li style="margin-bottom: 1rem;">We don't sell utensils in retail quantity.</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+</div>
+
+                
+            </div>
+        </section>
+        
+        <!-- Slide 11: Contact -->
+        <section class="slide" id="slide11">
+            <div class="slide-content">
+                <div class="text-content">
+                    <h1 class="slide-title">Let's Build a Partnership</h1>
+                    <p class="slide-subtitle">Connect with us for sample images, or partnership opportunities</p>
+                </div>
+                <div class="image-content">
+                    <div class="contact-info">
+                        <div class="contact-item">
+                            <h3>Address</h3>
+                            <p>Bhandara</p>
+                        </div>
+                        <div class="contact-item">
+                            <h3>Phone</h3>
+                            <p>+91 8806-8524-87</p>
+                        </div>
+                        <div class="contact-item">
+                            <h3>Email</h3>
+                            <p>kabravinayak@gmail.com</p>
+                        </div>
+                        <div class="contact-item">
+                            <h3>Website</h3>
+                            <p>www.skuindia.in</p>
+                        </div>
+                    </div>
+                    
+                    <div class="qr-code">
+                        SCAN FOR CATALOG
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Navigation -->
+        <div class="navigation">
+            <!-- Dots will be generated dynamically by JavaScript -->
+        </div>+
+        
+        <div class="nav-arrow nav-prev">←</div>
+        <div class="nav-arrow nav-next">→</div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const slides = document.querySelectorAll('.slide');
+            const navigation = document.querySelector('.navigation');
+            const prevBtn = document.querySelector('.nav-prev');
+            const nextBtn = document.querySelector('.nav-next');
+            let currentSlide = 0;
+            
+            // Generate navigation dots for all slides
+            slides.forEach((_, index) => {
+                const dot = document.createElement('div');
+                dot.className = 'nav-dot';
+                dot.setAttribute('data-slide', index);
+                if (index === 0) dot.classList.add('active');
+                navigation.appendChild(dot);
+            });
+            
+            const dots = document.querySelectorAll('.nav-dot');
+            
+            // Function to show a specific slide
+            function showSlide(n) {
+                // Hide all slides
+                slides.forEach(slide => {
+                    slide.classList.remove('active', 'prev');
+                });
+                
+                // Update dots
+                dots.forEach(dot => {
+                    dot.classList.remove('active');
+                });
+                
+                // Show current slide
+                if (slides[n]) {
+                    slides[n].classList.add('active');
+                }
+                if (dots[n]) {
+                    dots[n].classList.add('active');
+                }
+                
+                // Mark previous slide for transition
+                if (n > 0 && slides[n-1]) {
+                    slides[n-1].classList.add('prev');
+                }
+                
+                currentSlide = n;
+                console.log("Current slide:", currentSlide + 1); // Helpful for debugging
+            }
+            
+            // Initialize presentation
+            showSlide(currentSlide);
+            
+            // Navigation dots
+            dots.forEach((dot, index) => {
+                dot.addEventListener('click', () => {
+                    showSlide(index);
+                });
+            });
+            
+            // Previous button
+            prevBtn.addEventListener('click', () => {
+                if (currentSlide > 0) {
+                    showSlide(currentSlide - 1);
+                }
+            });
+            
+            // Next button
+            nextBtn.addEventListener('click', () => {
+                if (currentSlide < slides.length - 1) {
+                    showSlide(currentSlide + 1);
+                }
+            });
+            
+            // Keyboard navigation
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowRight' || e.key === ' ') {
+                    if (currentSlide < slides.length - 1) {
+                        showSlide(currentSlide + 1);
+                    }
+                } else if (e.key === 'ArrowLeft') {
+                    if (currentSlide > 0) {
+                        showSlide(currentSlide - 1);
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
